@@ -4,7 +4,6 @@
 import openai # for AI
 import streamlit as st # visual interface
 
-
 # acttivates openAI with the user prompt + predefined expertise as a metabolic health expert
 def generate_response(myprompt):
     response = openai.Completion.create(
@@ -33,13 +32,16 @@ def main ():
         diet_pref = st.selectbox('Choose dietary preference:', diet_options)
          # dietary preference
         plan_pref = st.selectbox('Choose plan preference:', plan_options)
-        #ques = st.text_input('Your question', key = 'Your question')
+        health_issues = st.text_input('Exisiting medical issues (optional):', key = 'Exisiting medical issues (optional):')
         checkbox_val = st.checkbox("Form checkbox") 
         submitted = st.form_submit_button("Submit")
 
     if submitted:
        # join the above information in a single variable to be sent to AI
        myprompt = "I am %d years old %s, my weight is %d lbs and my BMI is %d. My dietary preference in %s. I want to improve my lifestyle and cardiovascular health. Make a weekly %s plan for me." % (age, sex, wt_in_lbs, bmi, diet_pref, plan_pref)
+       if health_issues:
+           myprompt = "I am %d years old %s, my weight is %d lbs and my BMI is %d. My dietary preference in %s. I want to improve my lifestyle and cardiovascular health. Make a weekly %s plan for me. While creating the plan, keep the following %s health issues in mind." % (age, sex, wt_in_lbs, bmi, diet_pref, plan_pref, health_issues)
+  
        st.write(generate_response(myprompt))
 
 if __name__ == "__main__":
