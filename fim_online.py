@@ -4,11 +4,12 @@
 import openai # for AI
 import streamlit as st # visual interface
 
+
 # acttivates openAI with the user prompt + predefined expertise as a metabolic health expert
 def generate_response(myprompt):
     response = openai.Completion.create(
         engine="text-davinci-003",
-        prompt="Your role is to act like a nutrition and health expert. Don't diagnose. Use only peer-reviewed information for your responses. Always provide reading material to build on the information you shared. At the end, ask them when was the last time they visited their physician. ###" + myprompt,
+        prompt="Your role is to act like a nutrition and health expert. Don't diagnose. Use only peer-reviewed information for your responses. At the end, provide resources they can read on their own. ###" + myprompt,
         temperature=.02,
         max_tokens=1024
     )
@@ -16,7 +17,7 @@ def generate_response(myprompt):
 
 # gathers user input
 def main ():
-    st.title("Weekly nutrition and activity plan") # title in the visual interface
+    st.title("Weekly nutrition and activity plan to improve cardiovascular health") # title in the visual interface
     sex_options = ["Female", "Male"]
     diet_options = ["Vegetarian", "Carnivorous"]
     plan_options = ["Diet", "Activity", "Diet & Activity"]
@@ -38,7 +39,7 @@ def main ():
 
     if submitted:
        # join the above information in a single variable to be sent to AI
-       myprompt = "I am %d years old %s, my weight is %d lbs and my BMI is %d. My dietary preference in %s. I want to improve my lifestyle. Make a weekly %s plan for me." % (age, sex, wt_in_lbs, bmi, diet_pref, plan_pref)
+       myprompt = "I am %d years old %s, my weight is %d lbs and my BMI is %d. My dietary preference in %s. I want to improve my lifestyle and cardiovascular health. Make a weekly %s plan for me." % (age, sex, wt_in_lbs, bmi, diet_pref, plan_pref)
        st.write(generate_response(myprompt))
 
 if __name__ == "__main__":
